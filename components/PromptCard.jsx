@@ -10,6 +10,13 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   const router = useRouter();
   const [copied, setCopied] = useState("");
 
+  const handlePromptCardProfileClick = () => {
+    // If you clicked on one of your own posts, just go to your profile
+    if (post.creator._id === session?.user.id) return router.push("/profile");
+
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`); //need to give id and username
+  };
+
   const handleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt);
@@ -19,7 +26,10 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   return (
     <div className="prompt_card">
       <div className="flex justify-between-items-start gap-5">
-        <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+        <div
+          className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+          onClick={handlePromptCardProfileClick}
+        >
           <Image
             src={post.creator?.image}
             alt="user_image"
